@@ -1,0 +1,17 @@
+version: '2'
+services:
+    crud_mood-mongodb:
+        container_name: crud_mood-mongodb
+        image: mongo:3.3.9
+        ports:
+            - "27017:27017"
+        command: mongos --configdb crud_mood-mongodb-config
+    crud_mood-mongodb-node:
+        build:
+            context: .
+            dockerfile: mongodb/MongoDB.Dockerfile
+        command: mongod --replSet rs1 --noprealloc --smallfiles
+    crud_mood-mongodb-config:
+        image: mongo:mongo:3.3.9
+        container_name: crud_mood-mongodb-config
+        command: mongod --noprealloc --smallfiles --configsvr --dbpath /data/db

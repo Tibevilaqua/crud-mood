@@ -1,0 +1,17 @@
+version: '2'
+services:
+    crud_mood-app:
+        image: crud_mood
+        external_links:
+            - crud_mood-mongodb:mongodb
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod
+            - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017
+            - SPRING_DATA_MONGODB_DATABASE=crud_mood
+            - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
+        ports:
+            - 8080:8080
+    crud_mood-mongodb:
+        extends:
+            file: mongodb.yml
+            service: crud_mood-mongodb
