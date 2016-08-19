@@ -5,18 +5,14 @@ import bevila.tiago.domain.User;
 import bevila.tiago.repository.UserRepository;
 import bevila.tiago.service.UserService;
 import bevila.tiago.web.rest.dto.ManagedUserDTO;
-import bevila.tiago.web.rest.util.HeaderUtil;
-import bevila.tiago.web.rest.util.PaginationUtil;
 import com.codahale.metrics.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -25,7 +21,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -88,11 +83,9 @@ public class UserResource {
         //Lowercase the user login before comparing with database
         if (userRepository.findOneByLogin(managedUserDTO.getLogin().toLowerCase()).isPresent()) {
             return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert("userManagement", "userexists", "Login already in use"))
                 .body(null);
         } else if (userRepository.findOneByEmail(managedUserDTO.getEmail()).isPresent()) {
             return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert("userManagement", "emailexists", "Email already in use"))
                 .body(null);
         } else {
             User newUser = userService.createUser(managedUserDTO);
@@ -103,7 +96,6 @@ public class UserResource {
             request.getServerPort() +              // "80"
             request.getContextPath();              // "/myContextPath" or "" if deployed in root context
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
-                .headers(HeaderUtil.createAlert( "A user is created with identifier " + newUser.getLogin(), newUser.getLogin()))
                 .body(newUser);
         }
     }
@@ -124,11 +116,11 @@ public class UserResource {
         log.debug("REST request to update User : {}", managedUserDTO);
         Optional<User> existingUser = userRepository.findOneByEmail(managedUserDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserDTO.getId()))) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("userManagement", "emailexists", "E-mail already in use")).body(null);
+            return ResponseEntity.badRequest().body(null);
         }
         existingUser = userRepository.findOneByLogin(managedUserDTO.getLogin().toLowerCase());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserDTO.getId()))) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("userManagement", "userexists", "Login already in use")).body(null);
+            return ResponseEntity.badRequest().body(null);
         }
         return userRepository
             .findOneById(managedUserDTO.getId())
@@ -139,7 +131,6 @@ public class UserResource {
                 user.setEmail(managedUserDTO.getEmail());
                 userRepository.save(user);
                 return ResponseEntity.ok()
-                    .headers(HeaderUtil.createAlert("A user is updated with identifier " + managedUserDTO.getLogin(), managedUserDTO.getLogin()))
                     .body(new ManagedUserDTO(userRepository
                         .findOne(managedUserDTO.getId())));
             })
@@ -149,7 +140,7 @@ public class UserResource {
 
     /**
      * GET  /users : get all users.
-     * 
+     *
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and with body all users
      * @throws URISyntaxException if the pagination headers couldn't be generated
@@ -164,8 +155,7 @@ public class UserResource {
         List<ManagedUserDTO> managedUserDTOs = page.getContent().stream()
             .map(ManagedUserDTO::new)
             .collect(Collectors.toList());
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
-        return new ResponseEntity<>(managedUserDTOs, headers, HttpStatus.OK);
+        return new ResponseEntity<>(managedUserDTOs, HttpStatus.OK);
     }
 
     /**
@@ -181,6 +171,6 @@ public class UserResource {
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
         userService.deleteUserInformation(login);
-        return ResponseEntity.ok().headers(HeaderUtil.createAlert( "A user is deleted with identifier " + login, login)).build();
+        return ResponseEntity.ok().build();
     }
 }

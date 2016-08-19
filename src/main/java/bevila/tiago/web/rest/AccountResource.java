@@ -5,7 +5,6 @@ import bevila.tiago.repository.UserRepository;
 import bevila.tiago.service.UserService;
 import bevila.tiago.web.rest.dto.ManagedUserDTO;
 import bevila.tiago.web.rest.dto.UserDTO;
-import bevila.tiago.web.rest.util.HeaderUtil;
 import com.codahale.metrics.annotation.Timed;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -55,7 +54,7 @@ public class AccountResource {
     public ResponseEntity<String> saveAccount(@Valid @RequestBody UserDTO userDTO) {
         Optional<User> existingUser = userRepository.findOneByEmail(userDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(userDTO.getLogin()))) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "emailexists", "Email already in use")).body(null);
+            return ResponseEntity.badRequest().body(null);
         }
         return
             Optional.of(new ResponseEntity<String>(HttpStatus.CREATED))
