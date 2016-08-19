@@ -23,11 +23,6 @@ spring:
         mongodb:
             uri: mongodb://localhost:27017
             database: crud_mood
-    mail:
-        host: localhost
-        port: 25
-        username:
-        password:
     messages:
         cache-seconds: 1
     thymeleaf:
@@ -47,19 +42,9 @@ jhipster:
         rememberMe:
             # security key (this key should be unique for your application, and kept secret)
             key: 6db238501c8b078a80ab980a58c11952e76536a6
-    mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: crud_mood@localhost
+
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
-        spark:
-            enabled: false
-            host: localhost
-            port: 9999
-        graphite:
-            enabled: false
-            host: localhost
-            port: 2003
-            prefix: crud_mood
         logs: # Reports Dropwizard metrics in the logs
             enabled: false
             reportFrequency: 60 # in seconds

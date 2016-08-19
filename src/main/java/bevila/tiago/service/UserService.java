@@ -1,18 +1,13 @@
 package bevila.tiago.service;
 
 import bevila.tiago.domain.User;
+import bevila.tiago.endpoint.dto.ManagedUserDTO;
 import bevila.tiago.repository.UserRepository;
-import bevila.tiago.service.util.RandomUtil;
-import bevila.tiago.web.rest.dto.ManagedUserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.time.ZonedDateTime;
-import java.util.List;
 
 /**
  * Service class for managing users.

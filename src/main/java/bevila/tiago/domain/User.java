@@ -1,12 +1,9 @@
 package bevila.tiago.domain;
 
-import bevila.tiago.config.Constants;
+import bevila.tiago.infrastructure.config.Constants;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,15 +13,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Locale;
-import java.util.Set;
-import java.time.ZonedDateTime;
 
 /**
  * A user.
  */
-@Document(collection = "jhi_user")
+@Document(collection = "user")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,8 +47,6 @@ public class User implements Serializable {
     @Email
     @Size(max = 100)
     private String email;
-
-
 
     public String getId() {
         return id;

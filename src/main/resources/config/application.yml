@@ -13,9 +13,7 @@
 
 management:
     context-path: /management
-    health:
-        mail:
-            enabled: false # When using the MailService, configure an SMTP server and set this to true
+
 
 spring:
     application:
@@ -51,22 +49,10 @@ jhipster:
     #cors: #By default CORS are not enabled. Uncomment to enable.
         #allowed-origins: "*"
         #allowed-methods: GET, PUT, POST, DELETE, OPTIONS
-        #allowed-headers: "*"
+        #allowed-headers: "*"JHipsterProperties
         #exposed-headers:
         #allow-credentials: true
         #max-age: 1800
-    mail:
-        from: crud_mood@localhost
-    swagger:
-        title: crud_mood API
-        description: crud_mood API documentation
-        version: 0.0.1
-        termsOfServiceUrl:
-        contactName:
-        contactUrl:
-        contactEmail:
-        license:
-        licenseUrl:
     ribbon:
         # comma seperated list of profiles to show a ribbon on the GUI
         displayOnActiveProfiles: dev

@@ -1,15 +1,14 @@
 package bevila.tiago;
 
-import bevila.tiago.config.Constants;
-import bevila.tiago.config.DefaultProfileUtil;
-import bevila.tiago.config.JHipsterProperties;
-
+import bevila.tiago.infrastructure.config.Constants;
+import bevila.tiago.infrastructure.config.DefaultProfileUtil;
+import bevila.tiago.infrastructure.config.CrudMoodProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.actuate.autoconfigure.*;
+import org.springframework.boot.actuate.autoconfigure.MetricFilterAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.MetricRepositoryAutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
@@ -23,7 +22,7 @@ import java.util.Collection;
 
 @ComponentScan
 @EnableAutoConfiguration(exclude = { MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class })
-@EnableConfigurationProperties({ JHipsterProperties.class })
+@EnableConfigurationProperties({ CrudMoodProperties.class })
 public class CrudMoodApp {
 
     private static final Logger log = LoggerFactory.getLogger(CrudMoodApp.class);
