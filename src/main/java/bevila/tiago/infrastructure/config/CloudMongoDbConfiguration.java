@@ -1,5 +1,6 @@
 package bevila.tiago.infrastructure.config;
 
+import bevila.tiago.infrastructure.config.dbmigrations.InitialSetupMigration;
 import com.github.mongobee.Mongobee;
 import com.mongodb.Mongo;
 import bevila.tiago.infrastructure.util.JSR310DateConverters.*;
@@ -20,6 +21,8 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+
+import static bevila.tiago.infrastructure.config.dbmigrations.InitialSetupMigration.INITIAL_SET_UP_MIGRATION_PACKAGE_PATH;
 
 @Configuration
 @EnableMongoRepositories("bevila.tiago.repository")
@@ -59,7 +62,7 @@ public class CloudMongoDbConfiguration extends AbstractMongoConfiguration  {
         Mongobee mongobee = new Mongobee(mongo());
         mongobee.setDbName(getDatabaseName());
         // package to scan for migrations
-        mongobee.setChangeLogsScanPackage("bevila.tiago.config.dbmigrations");
+        mongobee.setChangeLogsScanPackage(INITIAL_SET_UP_MIGRATION_PACKAGE_PATH);
         mongobee.setEnabled(true);
         return mongobee;
     }

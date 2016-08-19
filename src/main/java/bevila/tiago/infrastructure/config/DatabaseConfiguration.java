@@ -1,5 +1,6 @@
 package bevila.tiago.infrastructure.config;
 
+import bevila.tiago.infrastructure.config.dbmigrations.InitialSetupMigration;
 import bevila.tiago.infrastructure.util.JSR310DateConverters.*;
 import com.mongodb.Mongo;
 import com.github.mongobee.Mongobee;
@@ -74,7 +75,7 @@ public class DatabaseConfiguration extends AbstractMongoConfiguration {
         Mongobee mongobee = new Mongobee(mongo);
         mongobee.setDbName(mongoProperties.getDatabase());
         // package to scan for migrations
-        mongobee.setChangeLogsScanPackage("bevila.tiago.config.dbmigrations");
+        mongobee.setChangeLogsScanPackage(InitialSetupMigration.INITIAL_SET_UP_MIGRATION_PACKAGE_PATH);
         mongobee.setEnabled(true);
         return mongobee;
     }

@@ -16,6 +16,8 @@ package bevila.tiago.infrastructure.config.dbmigrations;
 @ChangeLog(order = "001")
 public class InitialSetupMigration {
 
+    public static final String INITIAL_SET_UP_MIGRATION_PACKAGE_PATH = InitialSetupMigration.class.getPackage().getName();
+
     private Map<String, String>[] authoritiesUser = new Map[]{new HashMap<>()};
 
     private Map<String, String>[] authoritiesAdminAndUser = new Map[]{new HashMap<>(), new HashMap<>()};
@@ -26,22 +28,9 @@ public class InitialSetupMigration {
         authoritiesAdminAndUser[1].put("_id", "ROLE_ADMIN");
     }
 
-    @ChangeSet(order = "01", author = "initiator", id = "01-addAuthorities")
-    public void addAuthorities(DB db) {
-        DBCollection authorityCollection = db.getCollection("jhi_authority");
-        authorityCollection.insert(
-            BasicDBObjectBuilder.start()
-                .add("_id", "ROLE_ADMIN")
-                .get());
-        authorityCollection.insert(
-            BasicDBObjectBuilder.start()
-                .add("_id", "ROLE_USER")
-                .get());
-    }
-
     @ChangeSet(order = "02", author = "initiator", id = "02-addUsers")
     public void addUsers(DB db) {
-        DBCollection usersCollection = db.getCollection("jhi_user");
+        DBCollection usersCollection = db.getCollection("user");
         usersCollection.createIndex("login");
         usersCollection.createIndex("email");
         usersCollection.insert(BasicDBObjectBuilder.start()
@@ -51,54 +40,8 @@ public class InitialSetupMigration {
                 .add("first_name", "")
                 .add("last_name", "System")
                 .add("email", "system@localhost")
-                .add("activated", "true")
-                .add("lang_key", "en")
-                .add("created_by", "system")
-                .add("created_date", new Date())
-                .add("authorities", authoritiesAdminAndUser)
                 .get()
         );
-        usersCollection.insert(BasicDBObjectBuilder.start()
-                .add("_id", "user-1")
-                .add("login", "anonymousUser")
-                .add("password", "$2a$10$j8S5d7Sr7.8VTOYNviDPOeWX8KcYILUVJBsYV83Y5NtECayypx9lO")
-                .add("first_name", "Anonymous")
-                .add("last_name", "User")
-                .add("email", "anonymous@localhost")
-                .add("activated", "true")
-                .add("lang_key", "en")
-                .add("created_by", "system")
-                .add("created_date", new Date())
-                .add("authorities", new Map[]{})
-                .get()
-        );
-        usersCollection.insert(BasicDBObjectBuilder.start()
-                .add("_id", "user-2")
-                .add("login", "admin")
-                .add("password", "$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC")
-                .add("first_name", "admin")
-                .add("last_name", "Administrator")
-                .add("email", "admin@localhost")
-                .add("activated", "true")
-                .add("lang_key", "en")
-                .add("created_by", "system")
-                .add("created_date", new Date())
-                .add("authorities", authoritiesAdminAndUser)
-                .get()
-        );
-        usersCollection.insert(BasicDBObjectBuilder.start()
-                .add("_id", "user-3")
-                .add("login", "user")
-                .add("password", "$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K")
-                .add("first_name", "")
-                .add("last_name", "User")
-                .add("email", "user@localhost")
-                .add("activated", "true")
-                .add("lang_key", "en")
-                .add("created_by", "system")
-                .add("created_date", new Date())
-                .add("authorities", authoritiesUser)
-                .get()
-        );
+
     }
 }
